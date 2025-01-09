@@ -121,3 +121,75 @@ So by standing somewhere that has a `.env` file we can run `docker run --env-fil
 and then have the message overriden by the corresponding value, this is great.
 
 ## ASP.NET Application for overriding app-settings
+
+Having all the basic knowledge in regard to how to trickle down arguments and 
+override values from the application through environment variables. We can extrapolate 
+and leverage this knowledge in order to also override an ASP.NET Rest API configuration 
+value perhaps, in order to make changes in behavior at run-time.
+
+The code doesn't reflect this, but just to get the idea of how we can use an env variable 
+at the Dockerfile level directly. First of all, under the same root solution path 
+constraint, we can run this command to build the API's image:
+
+````
+docker build -f ./web-api-override/Dockerfile -t web-api-override .
+````
+
+And now, in order to bind to the internal `8080` port we can run the container like 
+so:
+
+````
+docker run --rm -p 5066:8080 web-api-override
+````
+
+If we hit the `/config` endpoint we should be seeing the overriden value as a response, 
+not the default of the app.
+
+In here we are already playing around with the conventions that an ASP.NET Core 
+application manages and how it can use them to override what would be inside an 
+`appsettings.json`:
+
+````
+# Declare environment variable with default value (coalesce)
+ENV BigScoops__Arguments="-s SMALL"
+````
+
+As you can see by convention we have a json object under `BigScoops`, and down below 
+we have an `Arguments` property. We are overriding that with our custom value at the 
+Dockerfile level.
+
+Joining all of what we learned so far, we can now establish different levels and stages 
+at which we can inject custom arguments that can be later passed downstream all the 
+way to the executing container.
+
+### Build Arguments Approach
+
+If we build the `Dockerfile`, and following the build args passing down as such:
+
+````
+docker build -f ./web-api-override/Dockerfile --build-arg BigScoops__Arguments="-s SMALL" -t web-api-override .
+````
+
+We have now an image that holds inside of it the steps to receive a build argument 
+and then assign that to the respective env variable that will later override the 
+`appsettings` of the app that runs on the container.
+
+### Env File Approach
+
+In here, we don't pass arguments, we can build the same image, it's at runtime that 
+we can then assign things as we see fit:
+
+````
+docker build -f ./web-api-override/Dockerfile.env-version -t web-api-override .
+````
+
+When trying to run the image, whilst being in the same directory as a `.env` file we 
+can run this:
+
+````
+docker run --rm -p 5066:8080 --env-file .env web-api-override
+````
+
+And, if we have the correct override notation there, (`BigScoops__Arguments`) the 
+app will automatically grab that that's being mutated through the command that's 
+getting the container up.
