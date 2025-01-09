@@ -1,0 +1,11 @@
+@web_api_override_HostAddress = http://localhost:5066
+
+GET {{web_api_override_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{web_api_override_HostAddress}}/config/
+Accept: application/json
+
+###

@@ -92,9 +92,9 @@ changed by environment variables that can easily be passed down when running the
 of these commands and either of them will result in the same:
 
 ````
-docker run --env-file .env env-file-setup
+docker run --rm --env-file .env env-file-setup
 
-docker run -e APP_ARGUMENTS="-n Universe" env-file-setup
+docker run --rm -e APP_ARGUMENTS="-n Universe" env-file-setup
 ````
 
 If we have at the current standing directory an `.env` file it will parse all the 

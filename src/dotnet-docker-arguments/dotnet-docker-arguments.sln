@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "build-arguments-setup", "bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env-file-setup", "env-file-setup\env-file-setup.csproj", "{44E82F14-0937-4F57-B82C-14142C4443FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web-api-override", "web-api-override\web-api-override.csproj", "{F75B5AFD-4E7E-4D1F-A997-287B23C481F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{44E82F14-0937-4F57-B82C-14142C4443FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44E82F14-0937-4F57-B82C-14142C4443FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44E82F14-0937-4F57-B82C-14142C4443FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F75B5AFD-4E7E-4D1F-A997-287B23C481F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F75B5AFD-4E7E-4D1F-A997-287B23C481F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F75B5AFD-4E7E-4D1F-A997-287B23C481F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F75B5AFD-4E7E-4D1F-A997-287B23C481F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
