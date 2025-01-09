@@ -16,6 +16,12 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "env-file-setup.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+
+# Accept build arguments
+ARG APP_ARGUMENTS="-n World"
+# Set them as environment variables for runtime use
+ENV APP_ARGUMENTS=$APP_ARGUMENTS
+
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "env-file-setup.dll"]
+ENTRYPOINT ["sh", "-c", "dotnet env-file-setup.dll $APP_ARGUMENTS"]
