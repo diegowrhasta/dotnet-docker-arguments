@@ -9,6 +9,11 @@ changes its behavior (receives said argument).
 
 ## Variables passed down on image build
 
+The implementation for this is focused on the `env-file-setup` project, this is 
+a simple console application that takes a flag/argument under `-n`, and the following 
+argument being what changes the second part of the message that is outputted once 
+the app runs.
+
 ## Env file overriding defaults
 
 ## ASP.NET Application for overriding app-settings
