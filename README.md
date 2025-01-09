@@ -64,4 +64,60 @@ just delete itself, and you don't have remnants at all.
 
 ## Env file overriding defaults
 
+Okay, so there's some level of miss-information, docker-compose is the one leveraging 
+a `.env` file a lot, it uses that in an intermediate step when resolving all the 
+containers, the values and stuff like that. It's great still to know that it leverages 
+it that way.
+
+_Advise: Do not put sensitive information in ARGs that are declared in Dockerfiles_. 
+
+They leave a trace so people can easily extract secrets, passwords, keys or whatever 
+if they know what they are doing.
+
+Again, we have to buld the image with the known constraints, while standing at 
+`dotnet-docker-arguments\src\dotnet-docker-arguments`. We can run the 
+
+````
+docker build -f ./env-file-setup/Dockerfile -t env-file-setup .
+````
+
+command, notice how we aren't passing any ARG variable to it, ARG variables are things 
+that can be injected into a Dockerfile the moment that the `docker build` command is 
+run. Remember that.
+
+In our `env-file-setup` project we have simply copied the same code as the previous 
+project so the behavior is the same, but the way that the arguments are injected are 
+changed by environment variables that can easily be passed down when running the 
+`docker run`. There are two ways of doing this, you can run either 
+of these commands and either of them will result in the same:
+
+````
+docker run --env-file .env env-file-setup
+
+docker run -e APP_ARGUMENTS="-n Universe" env-file-setup
+````
+
+If we have at the current standing directory an `.env` file it will parse all the 
+key-value pairs and then have them injected into the container the moment it boots up.
+
+This is an example of an `.env` file that's at the project level:
+
+````
+APP_ARGUMENTS=-n Universe
+````
+
+And this is how our Dockerfile looks like:
+
+````
+# Declare environment variable with default value (coalesce)
+ENV APP_ARGUMENTS="-n World"
+
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["sh", "-c", "dotnet env-file-setup.dll $APP_ARGUMENTS"]
+````
+
+So by standing somewhere that has a `.env` file we can run `docker run --env-file .env env-file-setup` 
+and then have the message overriden by the corresponding value, this is great.
+
 ## ASP.NET Application for overriding app-settings
