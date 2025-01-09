@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env-file-setup", "env-file-setup\env-file-setup\env-file-setup.csproj", "{89BFC1CF-F96C-4F9D-85B4-593B42291484}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "build-arguments-setup", "build-arguments-setup\build-arguments-setup.csproj", "{89BFC1CF-F96C-4F9D-85B4-593B42291484}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,7 +9,7 @@ changes its behavior (receives said argument).
 
 ## Variables passed down on image build
 
-The implementation for this is focused on the `env-file-setup` project, this is 
+The implementation for this is focused on the `build-arguments-setup` project, this is 
 a simple console application that takes a flag/argument under `-n`, and the following 
 argument being what changes the second part of the message that is outputted once 
 the app runs.
@@ -18,7 +18,7 @@ Whilst standing at `dotnet-docker-arguments\src\dotnet-docker-arguments`. You ca
 run this command:
 
 ````
-docker build --build-arg APP_ARGUMENTS="-n Brother" -f ./env-file-setup/env-file-setup/Dockerfile -t env-file-setup .
+docker build --build-arg APP_ARGUMENTS="-n World" -f ./build-arguments-setup/Dockerfile -t build-arguments-setup .
 ````
 
 We are passing down at build-time the arguments that will be then grabbed by the 
@@ -37,7 +37,7 @@ ENV APP_ARGUMENTS=$APP_ARGUMENTS
 
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["sh", "-c", "dotnet env-file-setup.dll $APP_ARGUMENTS"]
+ENTRYPOINT ["sh", "-c", "dotnet build-arguments-setup.dll $APP_ARGUMENTS"]
 ````
 
 We first coalesce the arguments with `ARG APP_ARGUMENTS="-n World"` just in case we 
@@ -55,6 +55,12 @@ this will be a bash session, we also get the access to environment variables, he
 doing `ENV APP_ARGUMENTS=$APP_ARGUMENTS` makes sense and when running this command 
 bash will replace the value of that variable name with the actual value, that we also 
 injected at the Docker image build stage.
+
+### Running the Docker container
+
+A good way to test the container after building it is to simply run it like so: 
+`docker run --rm build-arguments-setup`, this way the container once it exits, it will 
+just delete itself, and you don't have remnants at all.
 
 ## Env file overriding defaults
 
